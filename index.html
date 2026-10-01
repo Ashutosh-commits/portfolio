@@ -100,69 +100,574 @@
               <span class="line"><span class="line-inner">Selected</span></span>
               <span class="line"><span class="line-inner accent">Work</span></span>
             </h2>
-            <p class="section-lede" data-reveal>A few recent projects and experiments.</p>
+            <p class="section-lede" data-reveal>A selected set of shipped products, platforms and frontend experiments.</p>
 
             <div class="project-grid">
-              <article class="project-card" data-reveal style="--reveal-delay: 0s">
-                <div class="project-media">
-                  <img src="/assets/projects/project-01.webp" alt="Reef Dashboard preview" loading="lazy" />
-                </div>
-                <div class="project-body">
-                  <h3>Reef Dashboard</h3>
-                  <p>A real-time analytics dashboard for tracking product metrics, with live charts, saved views and a component library built from scratch.</p>
-                  <div class="project-tags">
-                    <span>React</span><span>TypeScript</span><span>D3.js</span>
+              <div class="project-deck" data-deck data-reveal style="--reveal-delay: 0.00s">
+                <article class="deck-card deck-main" data-card data-pos="front" aria-label="Food Mahal OMS">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="Food Mahal OMS screenshots">
+                    <div class="carousel-track">
+                        <img src="/assets/projects/project-01.webp" alt="Food Mahal OMS screenshot 1 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-01-b.webp" alt="Food Mahal OMS screenshot 2 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-01-c.webp" alt="Food Mahal OMS screenshot 3 of 3" draggable="false" decoding="async" />
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                    <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                    <div class="carousel-dots" data-dots></div>
                   </div>
-                  <a class="project-link" href="#" aria-label="View Reef Dashboard project">View project <span>›</span></a>
-                </div>
-              </article>
+                  <div class="project-body">
+                    <h3>Food Mahal OMS</h3>
+                    <p>QR-first cafe ordering and operations system with menu management, table sessions, admin controls and Supabase-backed security.</p>
+                    <div class="project-tags"><span>React</span><span>TypeScript</span><span>Supabase</span></div>
+                    <div class="card-foot">
+                      <a class="project-link" href="https://food-mahal-oms.pages.dev/" target="_blank" rel="noreferrer" aria-label="View Food Mahal OMS project">View project <span>›</span></a>
+                      <button class="push-btn" type="button" data-push aria-label="View detailed information for Food Mahal OMS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Details</span></button>
+                    </div>
+                  </div>
+                </article>
 
-              <article class="project-card" data-reveal style="--reveal-delay: .12s">
-                <div class="project-media">
-                  <img src="/assets/projects/project-02.webp" alt="Tidepool app preview" loading="lazy" />
-                </div>
-                <div class="project-body">
-                  <h3>Tidepool</h3>
-                  <p>A mobile-first companion app with offline sync, push reminders and a smooth onboarding flow, shipped to both app stores.</p>
-                  <div class="project-tags">
-                    <span>React Native</span><span>Node.js</span><span>GraphQL</span>
+                <article class="deck-card deck-specs" data-card data-pos="back" aria-hidden="true" aria-label="Food Mahal OMS details">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-body specs-body">
+                    <h3>Food Mahal OMS</h3>
+                    <a class="project-link back-project-link" href="https://food-mahal-oms.pages.dev/" target="_blank" rel="noreferrer" aria-label="View Food Mahal OMS project">View project <span>›</span></a>
+                    <div class="details-scroll" tabindex="0" aria-label="Detailed Food Mahal OMS project information">
+                      <ul class="specs-list resume-points">
+                        <li>Built a <strong>QR-first</strong> cafe ordering and operations system with <strong>React 19</strong>, <strong>TypeScript</strong>, Tailwind CSS and <strong>Supabase</strong>, covering menu browsing, table sessions, notices and admin workflows.</li>
+                        <li>Designed the data layer around <strong>PostgreSQL</strong>, Supabase Auth and <strong>Row Level Security (RLS)</strong>, keeping customer flows account-free while restricting owner/admin operations.</li>
+                        <li>Implemented <strong>16 database migrations</strong> covering pricing, ordering, sessions, QR provisioning, admin controls and security guards.</li>
+                        <li>Added <strong>2 Edge Functions</strong> for protected backend operations, including menu-item suggestions and cafe-table provisioning; provider secrets stay server-side.</li>
+                        <li>Built admin analytics for today's orders, order value and pending orders, plus all-time value/ratings, a <strong>7-day</strong> order-value trend, top items and table-session activity.</li>
+                        <li>Added token-bound customer-session RPCs, owner/admin-only order functions and secure menu-item mutation so the browser never needs a Supabase service-role key.</li>
+                      </ul>
+                    </div>
+                    <div class="card-foot">
+                      <button class="push-btn" type="button" data-push aria-label="Return to Food Mahal OMS preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Preview</span></button>
+                    </div>
                   </div>
-                  <a class="project-link" href="#" aria-label="View Tidepool project">View project <span>›</span></a>
-                </div>
-              </article>
+                </article>
+              </div>
+              <div class="project-deck" data-deck data-reveal style="--reveal-delay: 0.12s">
+                <article class="deck-card deck-main" data-card data-pos="front" aria-label="BroKar">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="BroKar screenshots">
+                    <div class="carousel-track">
+                        <img src="/assets/projects/project-02.webp" alt="BroKar screenshot 1 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-02-b.webp" alt="BroKar screenshot 2 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-02-c.webp" alt="BroKar screenshot 3 of 3" draggable="false" decoding="async" />
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                    <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                    <div class="carousel-dots" data-dots></div>
+                  </div>
+                  <div class="project-body">
+                    <h3>BroKar</h3>
+                    <p>Indian real-estate platform combining property discovery, ML price prediction, recommendations, authentication and backend caching.</p>
+                    <div class="project-tags"><span>React</span><span>Node.js</span><span>FastAPI</span><span>ML</span></div>
+                    <div class="card-foot">
+                      <a class="project-link" href="https://brokar-nine.vercel.app/" target="_blank" rel="noreferrer" aria-label="View BroKar project">View project <span>›</span></a>
+                      <button class="push-btn" type="button" data-push aria-label="View detailed information for BroKar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Details</span></button>
+                    </div>
+                  </div>
+                </article>
 
-              <article class="project-card" data-reveal style="--reveal-delay: .24s">
-                <div class="project-media">
-                  <img src="/assets/projects/project-03.webp" alt="Coral CMS preview" loading="lazy" />
-                </div>
-                <div class="project-body">
-                  <h3>Coral CMS</h3>
-                  <p>A headless CMS and design-system pairing that lets a small marketing team ship new pages without ever opening a code editor.</p>
-                  <div class="project-tags">
-                    <span>Next.js</span><span>Sanity</span><span>Tailwind</span>
+                <article class="deck-card deck-specs" data-card data-pos="back" aria-hidden="true" aria-label="BroKar details">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-body specs-body">
+                    <h3>BroKar</h3>
+                    <a class="project-link back-project-link" href="https://brokar-nine.vercel.app/" target="_blank" rel="noreferrer" aria-label="View BroKar project">View project <span>›</span></a>
+                    <div class="details-scroll" tabindex="0" aria-label="Detailed BroKar project information">
+                      <ul class="specs-list resume-points">
+                        <li>Built and deployed a full-stack Indian real-estate platform with <strong>React 18</strong>, TypeScript, Express and PostgreSQL, supporting <strong>2,000+ listings</strong> and scraped property data.</li>
+                        <li>Engineered a two-stage ML pricing pipeline in <strong>Python FastAPI</strong> using <strong>XGBoost + LSTM</strong>, exposing REST predictions for <strong>1–10 year</strong> property forecasts.</li>
+                        <li>Trained the pricing pipeline across <strong>8,000 rows</strong>, <strong>15 cities</strong> and <strong>14 features</strong>; the XGBoost stage uses <strong>600 estimators</strong> and the LSTM uses a <strong>24-step</strong> lookback.</li>
+                        <li>Secured the API with JWT access/refresh rotation, bcrypt password hashing, Helmet and rate limiting; integrated a Groq Llama 3.1 chatbot while keeping provider keys server-side.</li>
+                        <li>Deployed the stack across <strong>Vercel + Railway + Neon + Upstash</strong>, with Redis caching, nginx gzip and a <strong>3-job</strong> GitHub Actions CI/CD pipeline with Playwright E2E coverage.</li>
+                        <li>Optimised the delivery bundle with gzip compression and caching; the project documentation records an estimated <strong>~70%</strong> bundle reduction from gzip.</li>
+                      </ul>
+                    </div>
+                    <div class="card-foot">
+                      <button class="push-btn" type="button" data-push aria-label="Return to BroKar preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Preview</span></button>
+                    </div>
                   </div>
-                  <a class="project-link" href="#" aria-label="View Coral CMS project">View project <span>›</span></a>
-                </div>
-              </article>
+                </article>
+              </div>
+              <div class="project-deck" data-deck data-reveal style="--reveal-delay: 0.24s">
+                <article class="deck-card deck-main" data-card data-pos="front" aria-label="Kiku">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="Kiku screenshots">
+                    <div class="carousel-track">
+                        <img src="/assets/projects/project-03.webp" alt="Kiku screenshot 1 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-03-b.webp" alt="Kiku screenshot 2 of 3" draggable="false" decoding="async" />
+                        <img src="/assets/projects/project-03-c.webp" alt="Kiku screenshot 3 of 3" draggable="false" decoding="async" />
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                    <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                    <div class="carousel-dots" data-dots></div>
+                  </div>
+                  <div class="project-body">
+                    <h3>Kiku</h3>
+                    <p>Mood-aware food discovery and personalisation platform with recipe discovery, same-dish price comparison and deterministic fallbacks.</p>
+                    <div class="project-tags"><span>React</span><span>Node.js</span><span>MongoDB</span><span>AI</span></div>
+                    <div class="card-foot">
+                      <a class="project-link" href="https://kikubari.pages.dev/" target="_blank" rel="noreferrer" aria-label="View Kiku project">View project <span>›</span></a>
+                      <button class="push-btn" type="button" data-push aria-label="View detailed information for Kiku"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Details</span></button>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="deck-card deck-specs" data-card data-pos="back" aria-hidden="true" aria-label="Kiku details">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-body specs-body">
+                    <h3>Kiku</h3>
+                    <a class="project-link back-project-link" href="https://kikubari.pages.dev/" target="_blank" rel="noreferrer" aria-label="View Kiku project">View project <span>›</span></a>
+                    <div class="details-scroll" tabindex="0" aria-label="Detailed Kiku project information">
+                      <ul class="specs-list resume-points">
+                        <li>Built Kiku as a food discovery and personalisation platform combining mood/craving input, recommendations, restaurant discovery, saved items, recipes and price comparison.</li>
+                        <li>Implemented same-restaurant + same-dish comparison across supported providers; comparison results are normalised to menu-level price data rather than delivery fees, ETAs or checkout totals.</li>
+                        <li>Added <strong>24-hour</strong> comparison caching, a <strong>7-day</strong> stale fallback, in-flight request deduplication, rate limits and circuit-breaker handling for unreliable upstream providers.</li>
+                        <li>Designed PIN input as a <strong>6-digit discovery hint</strong> rather than an exact delivery address, avoiding fabricated delivery availability, ETA or fee claims.</li>
+                        <li>Implemented an on-device mood scan using browser-side MediaPipe; the camera starts only after explicit user action, stops after the scan and <strong>raw frames are not uploaded</strong>.</li>
+                        <li>Built deterministic recommendation/recipe/comparison fallbacks so core food discovery continues even when optional Cloudflare Workers AI is unavailable or rate-limited.</li>
+                        <li>Hardened the Node/Express API with Helmet, request IDs, Zod validation, HttpOnly/SameSite cookies, scrypt password hashing, endpoint-specific rate limits and provider URL allowlisting.</li>
+                      </ul>
+                    </div>
+                    <div class="card-foot">
+                      <button class="push-btn" type="button" data-push aria-label="Return to Kiku preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Preview</span></button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="project-deck" data-deck data-reveal style="--reveal-delay: 0.36s">
+                <article class="deck-card deck-main" data-card data-pos="front" aria-label="FrameVault">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="FrameVault screenshots">
+                    <div class="carousel-track">
+                        <img src="/assets/projects/project-02.webp" alt="FrameVault screenshot 1 of 1" draggable="false" decoding="async" />
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                    <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                    <div class="carousel-dots" data-dots></div>
+                  </div>
+                  <div class="project-body">
+                    <h3>FrameVault</h3>
+                    <p>Cinematic video-production management and collaboration platform prototype covering workflow, files, review, marketplace, payments and security.</p>
+                    <div class="project-tags"><span>React 19</span><span>TypeScript</span><span>Vite</span><span>Tailwind</span></div>
+                    <div class="card-foot">
+                      <a class="project-link" href="https://framevault-47b.pages.dev/" target="_blank" rel="noreferrer" aria-label="View FrameVault project">View project <span>›</span></a>
+                      <button class="push-btn" type="button" data-push aria-label="View detailed information for FrameVault"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Details</span></button>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="deck-card deck-specs" data-card data-pos="back" aria-hidden="true" aria-label="FrameVault details">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-body specs-body">
+                    <h3>FrameVault</h3>
+                    <a class="project-link back-project-link" href="https://framevault-47b.pages.dev/" target="_blank" rel="noreferrer" aria-label="View FrameVault project">View project <span>›</span></a>
+                    <div class="details-scroll" tabindex="0" aria-label="Detailed FrameVault project information">
+                      <ul class="specs-list resume-points">
+                        <li>Designed a production-management and collaboration frontend for video teams covering projects, milestones, tasks, files, video review, approvals, messaging, marketplace, payments and analytics.</li>
+                        <li>Implemented role-aware navigation and screens for <strong>8 roles</strong>: Super Admin, Company Admin, Company Manager, Project Manager, Editor, Client, Finance Manager and Read-only Viewer.</li>
+                        <li>Built <strong>22+</strong> application views including Projects, Project Details, Video Review, Files, Deliverables, Messages, Marketplace, Payments, Analytics, Permissions, Audit Logs and Security.</li>
+                        <li>Created responsive desktop, tablet and mobile layouts with a separate operational application experience behind a cinematic, scroll-driven marketing site.</li>
+                        <li>Implemented frontend representations of secure file workflows, version history, timestamped review feedback, role-based permissions, audit history, notifications and global search.</li>
+                        <li>Kept the implementation honest as a <strong>frontend UI/prototype</strong>; the README explicitly distinguishes implemented UI from backend, payment, storage, encryption and infrastructure services that still require production integration.</li>
+                      </ul>
+                    </div>
+                    <div class="card-foot">
+                      <button class="push-btn" type="button" data-push aria-label="Return to FrameVault preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Preview</span></button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="project-deck" data-deck data-reveal style="--reveal-delay: 0.48s">
+                <article class="deck-card deck-main" data-card data-pos="front" aria-label="Ashutosh Portfolio">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="Ashutosh Portfolio screenshots">
+                    <div class="carousel-track">
+                        <img src="/assets/projects/project-03.webp" alt="Ashutosh Portfolio screenshot 1 of 1" draggable="false" decoding="async" />
+                    </div>
+                    <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+                    <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+                    <div class="carousel-dots" data-dots></div>
+                  </div>
+                  <div class="project-body">
+                    <h3>Ashutosh Portfolio</h3>
+                    <p>Interactive pixel-aquarium portfolio built around scroll motion, animated project decks and a responsive editorial layout.</p>
+                    <div class="project-tags"><span>TypeScript</span><span>GSAP</span><span>PixiJS</span><span>Vite</span></div>
+                    <div class="card-foot">
+                      <a class="project-link" href="https://ashutosh-creates.ashutoshpundhir12.workers.dev/" target="_blank" rel="noreferrer" aria-label="View Ashutosh Portfolio project">View project <span>›</span></a>
+                      <button class="push-btn" type="button" data-push aria-label="View detailed information for Ashutosh Portfolio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Details</span></button>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="deck-card deck-specs" data-card data-pos="back" aria-hidden="true" aria-label="Ashutosh Portfolio details">
+                  <span class="drag-handle" data-handle aria-hidden="true"></span>
+                  <div class="project-body specs-body">
+                    <h3>Ashutosh Portfolio</h3>
+                    <a class="project-link back-project-link" href="https://ashutosh-creates.ashutoshpundhir12.workers.dev/" target="_blank" rel="noreferrer" aria-label="View Ashutosh Portfolio project">View project <span>›</span></a>
+                    <div class="details-scroll" tabindex="0" aria-label="Detailed Ashutosh Portfolio project information">
+                      <ul class="specs-list resume-points">
+                        <li>Built a custom portfolio experience around an animated freshwater aquarium using <strong>PixiJS 8</strong>, with the site content layered over a continuously rendered scene.</li>
+                        <li>Added <strong>GSAP 3</strong>-driven scroll and card transitions, including the project-deck flip/roll interaction and responsive reveal animations.</li>
+                        <li>Implemented a project showcase with <strong>3 cards per desktop row</strong>, responsive stacking below desktop widths, <strong>3-image</strong> carousels and keyboard/focus-aware controls.</li>
+                        <li>Added reduced-motion handling through <strong>prefers-reduced-motion</strong> so animation-heavy sections gracefully switch to accessible static states.</li>
+                        <li>Built the site as a Vite + TypeScript frontend with a lightweight dependency surface: <strong>PixiJS</strong>, <strong>GSAP</strong> and Vite/TypeScript tooling.</li>
+                        <li>Deployed the portfolio on <strong>Cloudflare Workers</strong> and kept project details, external links and interaction behavior entirely inside the frontend.</li>
+                      </ul>
+                    </div>
+                    <div class="card-foot">
+                      <button class="push-btn" type="button" data-push aria-label="Return to Ashutosh Portfolio preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Preview</span></button>
+                    </div>
+                  </div>
+                </article>
+              </div>
             </div>
           </div>
         </section>
 
         <section id="about" class="section about-section" aria-labelledby="about-title">
-          <div class="section-inner about-grid">
-            <div class="about-copy">
-              <h2 id="about-title" class="section-title">
-                <span class="line"><span class="line-inner">About</span></span>
-                <span class="line"><span class="line-inner accent">Me</span></span>
-              </h2>
-              <p data-reveal>I'm a frontend engineer and UI/UX designer who likes building interfaces that feel a little alive — small details, real motion, and enough polish that people notice without being told to look for it.</p>
-              <p data-reveal style="--reveal-delay: .1s">Most of my work sits at the edge of engineering and design: prototyping in code, sweating the interaction details, and shipping things that hold up outside of a demo. This site — a fully simulated aquarium running behind every page — is a good example of the kind of over-engineered detail I enjoy way too much.</p>
-              <div class="about-skills" data-reveal style="--reveal-delay: .2s">
-                <span>React</span><span>TypeScript</span><span>PixiJS</span><span>Design Systems</span><span>Motion Design</span>
+          <div class="section-inner">
+            <h2 id="about-title" class="section-title">
+              <span class="line"><span class="line-inner">About</span></span>
+              <span class="line"><span class="line-inner accent">Me</span></span>
+            </h2>
+            <p class="section-lede" data-reveal>Freelance developer, UI designer and unapologetic fish nerd. I build software that survives real shops, real clients &mdash; and looks good doing it.</p>
+
+            <!-- ============ Intro ============ -->
+            <div class="about-intro">
+              <div class="about-copy">
+                <p data-reveal>Hi, I'm <strong>Ashutosh</strong> &mdash; a freelance full-stack developer and UI designer who graduated with a <strong>BCA from Galgotias University in 2026</strong>. I build web apps end to end: React and TypeScript up front, Node and Python behind them, and a dash of machine learning when the problem actually asks for it.</p>
+                <p data-reveal style="--reveal-delay: .08s">My design instincts didn't come from a design school &mdash; they came from <strong>fish tanks</strong>. I keep four aquariums and love aquascaping, and arranging rock, wood and plants into a scape taught me about focal points, depth and negative space long before I wrote a line of CSS. Add a sketchbook, some paint, and you get someone who can't stop fiddling with the details.</p>
+                <p data-reveal style="--reveal-delay: .16s">Lately that means real work for real people: I sold my <strong>Food Mahal OMS</strong> project to a local restaurant, built a custom <strong>offline QR scanner</strong> for a small snack shop, and I'm now taking <strong>FrameVault</strong> to a client as a complete product. Between deadlines I'm scraping, scaping and learning something random.</p>
+                <div class="about-chips" data-reveal style="--reveal-delay: .22s">
+                  <span>Freelancing since 2026</span><span>BCA '26 &middot; Galgotias University</span><span>Aquascaper on the side</span>
+                </div>
+                <div class="about-actions" data-reveal style="--reveal-delay: .28s">
+                  <a class="btn btn-primary" href="#contact">Let's Talk <span>&rsaquo;</span></a>
+                  <a class="btn btn-secondary" href="#work">See My Work <span>&rsaquo;</span></a>
+                </div>
+              </div>
+
+              <aside class="about-card profile-card" data-reveal style="--reveal-delay: .12s" aria-label="Quick profile">
+                <div class="profile-top">
+                  <img class="about-photo" src="/assets/about/avatar.webp" alt="Ashutosh Pundhir" loading="lazy" />
+                  <div>
+                    <h3>Ashutosh Pundhir</h3>
+                    <p>Freelance Developer &amp; Designer</p>
+                  </div>
+                </div>
+                <dl class="profile-facts">
+                  <div><dt>Status</dt><dd>Freelancing since 2026</dd></div>
+                  <div><dt>Education</dt><dd>BCA, Galgotias University (2026)</dd></div>
+                  <div><dt>Stack</dt><dd>React &middot; TypeScript &middot; Node &middot; Python</dd></div>
+                  <div><dt>Off duty</dt><dd>Aquascaping, painting, cooking</dd></div>
+                  <div><dt>Right now</dt><dd class="live-dd"><span class="live-dot" aria-hidden="true"></span>Delivering FrameVault</dd></div>
+                </dl>
+              </aside>
+            </div>
+
+            <!-- ============ Stats ============ -->
+            <ul class="about-stats">
+              <li class="about-card" data-reveal><strong class="stat-num"><span data-count="4">4</span></strong><span class="stat-label">Aquariums at home</span></li>
+              <li class="about-card" data-reveal style="--reveal-delay: .08s"><strong class="stat-num"><span data-count="2000" data-suffix="+">2,000+</span></strong><span class="stat-label">Listings on BroKar</span></li>
+              <li class="about-card" data-reveal style="--reveal-delay: .16s"><strong class="stat-num"><span data-count="7">7</span></strong><span class="stat-label">Certs &amp; virtual internships</span></li>
+              <li class="about-card" data-reveal style="--reveal-delay: .24s"><strong class="stat-num"><span data-count="2">2</span></strong><span class="stat-label">Client projects delivered</span></li>
+            </ul>
+
+            <!-- ============ Freelance work ============ -->
+            <div class="about-block">
+              <div class="about-head" data-reveal>
+                <span class="about-kicker">Freelance</span>
+                <h3>Shipping for real shops &amp; real clients</h3>
+                <p>The unglamorous, satisfying kind of software: it has to work on a busy day, on a bad connection, for someone who just wants it to work.</p>
+              </div>
+              <div class="work-grid">
+                <article class="about-card work-card" data-reveal>
+                  <span class="badge">Sold</span>
+                  <h4>Food Mahal OMS</h4>
+                  <p>Built and sold to a local restaurant &mdash; software that has to hold up in a busy kitchen, not just in a demo.</p>
+                </article>
+                <article class="about-card work-card" data-reveal style="--reveal-delay: .08s">
+                  <span class="badge">Delivered</span>
+                  <h4>Offline QR Scanner</h4>
+                  <p>A custom TSX-based QR scanner for a small snack shop that works fully offline. No signal, no problem.</p>
+                  <div class="pill-row"><span>TSX</span><span>Offline-first</span></div>
+                </article>
+                <article class="about-card work-card" data-reveal style="--reveal-delay: .16s">
+                  <span class="badge badge-live">In progress</span>
+                  <h4>FrameVault</h4>
+                  <p>Taking FrameVault from a build to a complete, client-ready product &mdash; the last 10% that takes 50% of the time.</p>
+                </article>
+                <article class="about-card work-card" data-reveal style="--reveal-delay: .24s">
+                  <span class="badge badge-side">Personal project</span>
+                  <h4>Kiku &mdash; Regional Scraper</h4>
+                  <p>A regional scraper for my personal project, Kiku. Because collecting data by hand is a hobby I'm happy to outsource.</p>
+                  <div class="pill-row"><span>Web scraping</span></div>
+                </article>
               </div>
             </div>
-            <div class="about-media" data-reveal style="--reveal-delay: .12s">
-              <img class="about-photo" src="/assets/about/avatar.webp" alt="Ashutosh Pundhir" loading="lazy" />
+
+            <!-- ============ Toolbox ============ -->
+            <div class="about-block">
+              <div class="about-head" data-reveal>
+                <span class="about-kicker">Toolbox</span>
+                <h3>What I build with</h3>
+                <p>Front to back, with design and a little machine learning in the middle.</p>
+              </div>
+              <div class="skill-grid">
+                <article class="about-card skill-group" data-reveal>
+                  <h4>Frontend</h4>
+                  <div class="pill-row"><span>React 18</span><span>TypeScript</span><span>JavaScript (ES2020+)</span><span>Vite</span><span>HTML5</span><span>CSS3</span><span>Tailwind CSS</span><span>Radix UI</span><span>Recharts</span></div>
+                </article>
+                <article class="about-card skill-group" data-reveal style="--reveal-delay: .08s">
+                  <h4>Design &amp; Motion</h4>
+                  <div class="pill-row"><span>UI/UX</span><span>Responsive Design</span><span>Design Systems</span><span>Motion Design</span><span>PixiJS</span><span>Sketching &amp; Painting</span></div>
+                </article>
+                <article class="about-card skill-group" data-reveal style="--reveal-delay: .16s">
+                  <h4>Backend</h4>
+                  <div class="pill-row"><span>Node.js</span><span>Express.js</span><span>Prisma ORM</span><span>REST APIs</span><span>JWT Auth</span><span>Helmet.js</span><span>Rate Limiting</span></div>
+                </article>
+                <article class="about-card skill-group" data-reveal>
+                  <h4>Databases &amp; Cache</h4>
+                  <div class="pill-row"><span>PostgreSQL</span><span>MongoDB</span><span>Redis</span></div>
+                </article>
+                <article class="about-card skill-group" data-reveal style="--reveal-delay: .08s">
+                  <h4>ML &amp; AI</h4>
+                  <div class="pill-row"><span>Python</span><span>FastAPI</span><span>XGBoost</span><span>LSTM</span><span>TensorFlow</span><span>Keras</span><span>CNN</span><span>scikit-learn</span><span>Groq LLaMA API</span></div>
+                </article>
+                <article class="about-card skill-group" data-reveal style="--reveal-delay: .16s">
+                  <h4>Scraping, DevOps &amp; Tools</h4>
+                  <div class="pill-row"><span>Selenium</span><span>BeautifulSoup</span><span>Docker</span><span>GitHub Actions</span><span>nginx</span><span>Vercel</span><span>Railway</span><span>Playwright</span><span>Git</span><span>Postman</span></div>
+                </article>
+              </div>
+            </div>
+
+            <!-- ============ Journey ============ -->
+            <div class="about-block">
+              <div class="about-head" data-reveal>
+                <span class="about-kicker">Journey</span>
+                <h3>How I got here</h3>
+              </div>
+              <div class="journey">
+                <ol class="timeline">
+                  <li class="tl-item current" data-reveal>
+                    <span class="tl-dot" aria-hidden="true"></span>
+                    <span class="tl-date">2026 &ndash; Present</span>
+                    <h4>Freelance Developer &amp; Designer</h4>
+                    <p>Building and shipping client work solo: Food Mahal OMS for a local restaurant, an offline QR scanner for a snack shop, and FrameVault, heading to a complete delivery.</p>
+                  </li>
+                  <li class="tl-item" data-reveal>
+                    <span class="tl-dot" aria-hidden="true"></span>
+                    <span class="tl-date">2023 &ndash; 2026</span>
+                    <h4>BCA &mdash; Galgotias University</h4>
+                    <p>Bachelor of Computer Applications, Gautam Buddha Nagar. Full-stack, machine learning and cloud projects, plus the certifications and internships below.</p>
+                  </li>
+                  <li class="tl-item" data-reveal>
+                    <span class="tl-dot" aria-hidden="true"></span>
+                    <span class="tl-date">2021</span>
+                    <h4>Senior Secondary (Class XII)</h4>
+                    <p>CBSE, Range Hills Public School, Aligarh.</p>
+                  </li>
+                  <li class="tl-item" data-reveal>
+                    <span class="tl-dot" aria-hidden="true"></span>
+                    <span class="tl-date">2019</span>
+                    <h4>Secondary (Class X)</h4>
+                    <p>Range Hills Public School, Aligarh &mdash; where the curiosity started.</p>
+                  </li>
+                </ol>
+
+                <div class="stack-deck stack-how" data-stack data-reveal style="--reveal-delay: .1s" role="group" aria-roledescription="carousel" aria-label="How I work">
+                  <article class="stack-card" data-card data-pos="front" aria-label="Problem solving">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">How I work 1 of 5</span>
+                    <h4>Problem solving</h4>
+                    <p>Break it down, then break it down again until it's small enough to fix.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: System design"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="System design">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">How I work 2 of 5</span>
+                    <h4>System design</h4>
+                    <p>Boxes, arrows, and fewer surprises in production.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Communication"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="Communication">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">How I work 3 of 5</span>
+                    <h4>Communication</h4>
+                    <p>Clear updates, no jargon, no ghosting clients.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Adaptability"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="Adaptability">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">How I work 4 of 5</span>
+                    <h4>Adaptability</h4>
+                    <p>New stack by Friday? Show me the docs.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Attention to detail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="Attention to detail">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">How I work 5 of 5</span>
+                    <h4>Attention to detail</h4>
+                    <p>Yes, I will notice the 1px misalignment.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Problem solving"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============ Credentials ============ -->
+            <div class="about-block">
+              <div class="about-head" data-reveal>
+                <span class="about-kicker">Credentials</span>
+                <h3>Internships &amp; certifications</h3>
+                <p>Two AICTE &times; EduSkills virtual internships, a national-level NPTEL result, and a handful of IBM and Cisco badges.</p>
+              </div>
+              <div class="cert-grid">
+                <article class="about-card cert-card cert-featured" data-reveal>
+                  <span class="cert-type">Virtual internship &middot; 8 weeks</span>
+                  <h4>Data Engineering</h4>
+                  <p class="cert-org">AICTE &middot; EduSkills &mdash; curriculum by AWS Academy</p>
+                  <div class="cert-meta"><span>Apr &ndash; Jun 2026</span><span class="grade">Grade O &middot; Outstanding</span></div>
+                </article>
+                <article class="about-card cert-card cert-featured" data-reveal style="--reveal-delay: .08s">
+                  <span class="cert-type">Virtual internship</span>
+                  <h4>Prompt Engineering for AI</h4>
+                  <p class="cert-org">AICTE &middot; EduSkills</p>
+                  <div class="cert-meta"><span>Mar 2026</span><span class="grade">Outstanding</span></div>
+                </article>
+                <article class="about-card cert-card" data-reveal>
+                  <span class="cert-type">NPTEL &middot; IIT Madras</span>
+                  <h4>Entrepreneurship</h4>
+                  <p class="cert-org">Elite certificate &middot; 88% &middot; Course topper</p>
+                  <div class="cert-meta"><span>Jul &ndash; Oct 2024</span></div>
+                </article>
+                <article class="about-card cert-card" data-reveal style="--reveal-delay: .08s">
+                  <span class="cert-type">IBM SkillsBuild</span>
+                  <h4>Machine Learning with Python</h4>
+                  <div class="cert-meta"><span>Jan 2025</span></div>
+                </article>
+                <article class="about-card cert-card" data-reveal style="--reveal-delay: .16s">
+                  <span class="cert-type">IBM SkillsBuild</span>
+                  <h4>Data Science 101</h4>
+                  <div class="cert-meta"><span>Jan 2025</span></div>
+                </article>
+                <article class="about-card cert-card cert-half" data-reveal>
+                  <span class="cert-type">IBM SkillsBuild</span>
+                  <h4>SQL and Relational Databases 101</h4>
+                  <div class="cert-meta"><span>Jan 2025</span></div>
+                </article>
+                <article class="about-card cert-card cert-half" data-reveal style="--reveal-delay: .08s">
+                  <span class="cert-type">Cisco Networking Academy</span>
+                  <h4>CCNA: Introduction to Networks</h4>
+                  <p class="cert-org">Via Galgotias University</p>
+                  <div class="cert-meta"><span>Jun 2025</span></div>
+                </article>
+              </div>
+            </div>
+
+            <!-- ============ Aquarium corner ============ -->
+            <div class="about-block">
+              <div class="about-head" data-reveal>
+                <span class="about-kicker">Off the clock</span>
+                <h3>The Aquarium Corner</h3>
+                <p>Four tanks, zero chill. Aquascaping is where my sense of composition comes from &mdash; and the only place where I'm happy to watch things grow slowly.</p>
+              </div>
+              <!-- Replace the images in /public/assets/about/ (tank-1.webp ... tank-4.webp) with your own tank photos; edit the captions below. -->
+              <div class="tank-duo">
+                <div class="stack-deck stack-photos" data-stack data-reveal role="group" aria-roledescription="carousel" aria-label="My four aquariums">
+                  <figure class="stack-card stack-photo" data-card data-pos="front" aria-label="Tank 01">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-1.webp" alt="Aquarium 1" loading="lazy" draggable="false" />
+                    <figcaption>Tank 01</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 02"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 02">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-2.webp" alt="Aquarium 2" loading="lazy" draggable="false" />
+                    <figcaption>Tank 02</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 03"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 03">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-3.webp" alt="Aquarium 3" loading="lazy" draggable="false" />
+                    <figcaption>Tank 03</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 04"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 04">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-4.webp" alt="Aquarium 4" loading="lazy" draggable="false" />
+                    <figcaption>Tank 04</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 01"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                </div>
+                <div class="stack-deck stack-lessons" data-stack data-reveal style="--reveal-delay: .12s" role="group" aria-roledescription="carousel" aria-label="Aquascaping lessons for interface design">
+                  <article class="stack-card" data-card data-pos="front" aria-label="Focal point">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">Lesson 1 of 3</span>
+                    <h4>Focal point</h4>
+                    <p>One thing the eye lands on first. In a tank it's a rock or a stem; in an interface it's the button that matters.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Depth"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="Depth">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">Lesson 2 of 3</span>
+                    <h4>Depth</h4>
+                    <p>Foreground, midground, background. Layering makes flat things feel alive, in water and on screen.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Breathing room"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                  <article class="stack-card" data-card data-pos="back" aria-hidden="true" aria-label="Breathing room">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <span class="stack-kicker">Lesson 3 of 3</span>
+                    <h4>Breathing room</h4>
+                    <p>Negative space isn't empty. It's what lets everything else look intentional.</p>
+                    <div class="card-foot">
+                      <span class="stack-hint">Tap or drag to flip</span>
+                      <button class="push-btn" type="button" data-push aria-label="Show next card: Focal point"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <ul class="hobby-grid">
+                <li class="about-card" data-reveal><h4>Aquascaping</h4><p>Arranging rocks and plants like a UI layout. (It kind of is.)</p></li>
+                <li class="about-card" data-reveal style="--reveal-delay: .06s"><h4>Fishkeeping</h4><p>Four tanks. Water changes are my cardio.</p></li>
+                <li class="about-card" data-reveal style="--reveal-delay: .12s"><h4>Painting &amp; sketching</h4><p>Where most of my design instincts get their reps.</p></li>
+                <li class="about-card" data-reveal style="--reveal-delay: .18s"><h4>Cooking</h4><p>Debugging recipes in production.</p></li>
+                <li class="about-card" data-reveal style="--reveal-delay: .24s"><h4>Learning random things</h4><p>Rabbit holes are a feature, not a bug.</p></li>
+              </ul>
+            </div>
+
+            <!-- ============ Closing CTA ============ -->
+            <div class="about-card about-banner" data-reveal>
+              <h3>Got a project, a tank, or both?</h3>
+              <p>Freelance work, collaborations, or just fish talk &mdash; my inbox is open.</p>
+              <a class="btn btn-primary" href="#contact">Say Hello <span>&rsaquo;</span></a>
             </div>
           </div>
         </section>
