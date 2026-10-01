@@ -2,6 +2,8 @@ import 'pixi.js/unsafe-eval';
 import { Application, Container } from 'pixi.js';
 import gsap from 'gsap';
 import { AquariumScene } from './aquarium';
+import { initProjectDecks } from './projects';
+import { initAbout } from './about';
 import './styles.css';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -100,6 +102,9 @@ async function boot() {
   window.addEventListener('resize', syncScrollRange, { passive: true });
   window.addEventListener('scroll', updateScrollState, { passive: true });
   syncScrollRange();
+
+  initProjectDecks();
+  initAbout();
 
   const footerObserver = new IntersectionObserver(
     (entries) => {
