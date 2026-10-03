@@ -694,7 +694,9 @@ html.js-loading .site-header { opacity: 1; }
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #04191c;
+  touch-action: pan-y; /* horizontal swipes change the slide; vertical still scrolls the page */
 }
+.project-media .carousel-track img { cursor: zoom-in; }
 .carousel-track {
   display: flex;
   height: 100%;
@@ -767,15 +769,27 @@ html.js-loading .site-header { opacity: 1; }
 .carousel-dots button[aria-current='true'] { width: 26px; background: var(--lime); }
 
 /* ---- Card content ---- */
-.project-body { padding: 26px 28px 28px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
-.project-body h3 { margin: 0; font-size: 28.5px; font-weight: 600; }
-.project-body p { margin: 0; font-size: 17.5px; line-height: 1.55; color: var(--muted); flex: 1; }
+.project-body { padding: 20px 24px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
+.project-body h3 { margin: 0; font-size: 26px; font-weight: 600; flex: none; }
+.project-body p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  flex: 1 1 0;
+  min-height: 0;
+  /* Safety net: if a description is ever longer than the space left, it scrolls
+     inside the card so the tags and "View project" row are never pushed out. */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198, 237, 62, .5) transparent;
+}
 .project-body p strong { font-weight: 700; color: var(--ink); }
 
-.project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; flex: none; }
 .project-tags span {
-  font-size: 14px;
-  padding: 4px 11px;
+  font-size: 13px;
+  padding: 3px 10px;
   border-radius: 999px;
   background: rgba(198, 237, 62, .1);
   border: 1px solid rgba(198, 237, 62, .28);
@@ -788,7 +802,8 @@ html.js-loading .site-header { opacity: 1; }
   justify-content: space-between;
   gap: 12px;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 4px;
+  flex: none;
 }
 
 .project-link {
@@ -985,9 +1000,10 @@ html.js-loading .site-header { opacity: 1; }
 
 @media (max-width: 560px) {
   .project-deck { --peek: 12px; --card-h: 540px; }
-  .project-body { padding: 20px 20px 22px; }
-  .project-body h3 { font-size: 25.5px; }
-  .project-body p, .specs-list li { font-size: 16.5px; }
+  .project-body { padding: 18px 18px 18px; }
+  .project-body h3 { font-size: 24px; }
+  .project-body p { font-size: 15px; }
+  .specs-list li { font-size: 16.5px; }
   .carousel-btn { width: 22px; height: 22px; margin-top: -11px; }
   .brand { font-size: 19px; }
   .brand-mark { width: 23px; height: 23px; }
@@ -1604,4 +1620,153 @@ html.js-loading .site-header { opacity: 1; }
   .stack-deck { --peek: 12px; }
   .stack-card { padding: 22px 20px 18px; }
   .stack-photo { padding: 0; }
+}
+
+/* ---- Expand button on the card carousel ---- */
+.carousel-zoom {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--ink);
+  background: rgba(2, 18, 20, .72);
+  border: 1px solid rgba(238, 244, 219, .35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.carousel-zoom svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; }
+.carousel-zoom:hover, .carousel-zoom:focus-visible { color: var(--lime); border-color: var(--lime); }
+.carousel-zoom:active { transform: scale(.94); }
+
+/* ---- Screenshot lightbox (larger pop-up card) ---- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+.lightbox[hidden] { display: none; }
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 9, 10, .82);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.lightbox-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(1240px, 100%);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  padding: 16px 18px 16px;
+  background: #051b1e;
+  border: 1px solid rgba(238, 244, 219, .24);
+  border-radius: 18px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .5), 0 28px 70px rgba(0, 0, 0, .6);
+  opacity: 0;
+  transform: translateY(14px) scale(.97);
+  transition: opacity .22s ease, transform .26s cubic-bezier(.16, .84, .44, 1);
+}
+.lightbox.open .lightbox-backdrop { opacity: 1; }
+.lightbox.open .lightbox-card { opacity: 1; transform: none; }
+
+.lightbox-head { display: flex; align-items: center; gap: 12px; }
+.lightbox-title { margin: 0; flex: 1; min-width: 0; font-size: 24px; font-weight: 600; color: var(--ink); }
+.lightbox-count { font-size: 15px; color: var(--lime); letter-spacing: .08em; }
+.lightbox-close, .lightbox-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  color: var(--ink);
+  background: rgba(2, 18, 20, .78);
+  border: 1px solid rgba(238, 244, 219, .35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.lightbox-close { width: 38px; height: 38px; }
+.lightbox-btn { position: absolute; top: 50%; width: 46px; height: 46px; margin-top: -23px; z-index: 2; }
+.lightbox-prev { left: 14px; }
+.lightbox-next { right: 14px; }
+.lightbox-close svg, .lightbox-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; stroke-linejoin: miter; }
+.lightbox-close:hover, .lightbox-btn:hover, .lightbox-close:focus-visible, .lightbox-btn:focus-visible, .lightbox-dots button:focus-visible { color: var(--lime); border-color: var(--lime); outline: none; }
+.lightbox-btn:active { transform: scale(.95); }
+.lightbox-btn[hidden], .lightbox-dots[hidden], .lightbox-count[hidden] { display: none; }
+
+.lightbox-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: min(72vh, 760px);
+  height: min(72dvh, 760px);
+  overflow: hidden;
+  background: #031417;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lightbox-stage:active { cursor: grabbing; }
+.lightbox-img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.lightbox-caption { margin: 0; min-height: 1.4em; font-size: 15.5px; line-height: 1.4; text-align: center; color: var(--muted); }
+.lightbox-dots { display: flex; justify-content: center; gap: 8px; }
+.lightbox-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  background: rgba(238, 244, 219, .3);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: width .2s ease, background .2s ease;
+}
+.lightbox-dots button[aria-current='true'] { width: 26px; background: var(--lime); }
+
+@media (max-width: 700px) {
+  .lightbox { padding: 8px; }
+  .lightbox-card { padding: 12px; gap: 10px; border-radius: 14px; max-height: calc(100dvh - 16px); }
+  .lightbox-title { font-size: 19px; }
+  .lightbox-stage { height: min(68vh, 640px); height: min(68dvh, 640px); }
+  .lightbox-btn { width: 38px; height: 38px; margin-top: -19px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+  .lightbox-caption { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-backdrop, .lightbox-card { transition: none; }
+}
+
+/* ---- About: "How I build" note ---- */
+.about-note {
+  margin-top: 22px;
+  padding: 18px 22px 20px;
+  background: rgba(198, 237, 62, .05);
+  border: 1px solid rgba(238, 244, 219, .2);
+  border-left: 4px solid var(--lime);
+  border-radius: 12px;
+}
+.about-note .about-kicker { display: block; margin-bottom: 8px; }
+.about-note p { margin: 0; max-width: 980px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.about-note strong { font-weight: 700; color: var(--ink); }
+
+/* keep the two-line hero role tidy on very small phones */
+@media (max-width: 380px) {
+  .role { font-size: 16.5px; }
 }

@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { openLightbox, type LightboxItem } from './lightbox';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -13,6 +14,32 @@ function initCarousel(root: HTMLElement) {
   if (!track) return;
 
   const slides = Array.from(track.children) as HTMLElement[];
+  let index = 0;
+  let swiped = false;
+
+  // --- click an image (or the expand button) to open the larger pop-up ----
+  const title = (root.getAttribute('aria-label') ?? 'Project').replace(/ screenshots$/, '');
+  const lightboxItems = (): LightboxItem[] =>
+    slides.map((el) => {
+      const img = el as HTMLImageElement;
+      return { src: img.src, full: img.dataset.full || img.src, alt: img.alt };
+    });
+
+  const zoom = document.createElement('button');
+  zoom.type = 'button';
+  zoom.className = 'carousel-zoom';
+  zoom.setAttribute('aria-label', `View ${title} screenshots larger`);
+  zoom.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  root.append(zoom);
+  zoom.addEventListener('click', () => openLightbox(title, lightboxItems(), index, zoom));
+  track.addEventListener('click', () => {
+    if (swiped) {
+      swiped = false;
+      return;
+    }
+    openLightbox(title, lightboxItems(), index, zoom);
+  });
+
   if (slides.length < 2) {
     prev?.remove();
     next?.remove();
@@ -20,7 +47,29 @@ function initCarousel(root: HTMLElement) {
     return;
   }
 
-  let index = 0;
+  // --- swipe the card carousel (touch, pen or mouse drag) ------------------
+  let sx = 0;
+  let sy = 0;
+  let tracking = false;
+  root.addEventListener('pointerdown', (e) => {
+    if ((e.target as HTMLElement).closest('button')) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    tracking = true;
+    swiped = false;
+    sx = e.clientX;
+    sy = e.clientY;
+  });
+  root.addEventListener('pointerup', (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.clientX - sx;
+    const dy = e.clientY - sy;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      swiped = true;
+      go(index + (dx < 0 ? 1 : -1));
+    }
+  });
+  root.addEventListener('pointercancel', () => (tracking = false));
 
   const dots = slides.map((_, n) => {
     const dot = document.createElement('button');
