@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { AquariumScene } from './aquarium';
 import { initProjectDecks } from './projects';
 import { initAbout } from './about';
+import { shouldHideHeader } from './header';
 import './styles.css';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -95,6 +96,17 @@ async function boot() {
     const heroHidden = progress > 0.22;
     hero.classList.toggle('scrolled-away', heroHidden);
     hero.toggleAttribute('inert', heroHidden);
+    // hide the header during the empty aquarium-viewing stretch, bring it back at the Work section
+    const work = document.getElementById('work');
+    header.classList.toggle(
+      'header-hidden',
+      shouldHideHeader({
+        heroHidden,
+        workTop: work ? work.getBoundingClientRect().top : Infinity,
+        viewportH: window.innerHeight,
+        menuOpen: mobileMenu.classList.contains('open'),
+      }),
+    );
     scene.setScrollProgress(progress);
     updateNavigation();
   };
@@ -154,11 +166,73 @@ async function boot() {
   prefersReducedMotion.addEventListener?.('change', reduceHandler);
 
   const sound = document.querySelector<HTMLButtonElement>('[data-sound]');
+  // Ambient water loop played through the Web Audio API: a decoded buffer loops with no
+  // gap (an <audio loop> element leaves an audible hole at the seam). The file itself has
+  // a baked-in crossfade, so the end flows straight back into the start.
+  const AMBIENCE_VOLUME = 0.5;
+  let audioCtx: AudioContext | null = null;
+  let ambienceGain: GainNode | null = null;
+  let ambienceSource: AudioBufferSourceNode | null = null;
+  let ambienceBuffer: AudioBuffer | null = null;
+  let ambienceWanted = false;
+
+  const setSoundUi = (on: boolean) => {
+    if (!sound) return;
+    sound.setAttribute('aria-pressed', String(on));
+    sound.setAttribute('aria-label', on ? 'Turn aquarium sound off' : 'Turn aquarium sound on');
+    sound.classList.toggle('on', on);
+  };
+
+  const fadeAmbience = (to: number, seconds: number) => {
+    if (!audioCtx || !ambienceGain) return;
+    const param = ambienceGain.gain;
+    const now = audioCtx.currentTime;
+    param.cancelScheduledValues(now);
+    param.setValueAtTime(param.value, now);
+    param.linearRampToValueAtTime(to, now + seconds);
+  };
+
+  const startAmbience = async () => {
+    const AudioCtor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtor) throw new Error('Web Audio not supported');
+    if (!audioCtx) {
+      audioCtx = new AudioCtor();
+      ambienceGain = audioCtx.createGain();
+      ambienceGain.gain.value = 0;
+      ambienceGain.connect(audioCtx.destination);
+    }
+    await audioCtx.resume();
+    if (!ambienceBuffer) {
+      const probe = document.createElement('audio');
+      const url = probe.canPlayType('audio/ogg; codecs="vorbis"') ? '/assets/audio/stream-water.ogg' : '/assets/audio/stream-water.mp3';
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Audio file failed to load');
+      ambienceBuffer = await audioCtx.decodeAudioData(await response.arrayBuffer());
+    }
+    if (!ambienceWanted) return; // switched off again while loading
+    if (!ambienceSource) {
+      ambienceSource = audioCtx.createBufferSource();
+      ambienceSource.buffer = ambienceBuffer;
+      ambienceSource.loop = true;
+      ambienceSource.connect(ambienceGain!);
+      ambienceSource.start(0);
+    }
+    fadeAmbience(AMBIENCE_VOLUME, 1.2);
+  };
+
   sound?.addEventListener('click', () => {
-    const next = sound.getAttribute('aria-pressed') !== 'true';
-    sound.setAttribute('aria-pressed', String(next));
-    sound.setAttribute('aria-label', next ? 'Turn aquarium sound off' : 'Turn aquarium sound on');
-    sound.classList.toggle('on', next);
+    ambienceWanted = sound.getAttribute('aria-pressed') !== 'true';
+    setSoundUi(ambienceWanted);
+
+    if (ambienceWanted) {
+      startAmbience().catch(() => {
+        // playback blocked or file failed to load: put the button back to "off"
+        ambienceWanted = false;
+        setSoundUi(false);
+      });
+    } else {
+      fadeAmbience(0, 0.6);
+    }
   });
 
   const brand = document.querySelector<HTMLAnchorElement>('.brand');

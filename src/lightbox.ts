@@ -1,10 +1,13 @@
 /**
- * Screenshot lightbox: a larger pop-up card for the project carousels.
- * Prev/next buttons, arrow keys and swipe (touch or mouse drag) all navigate.
+ * Screenshot viewer: a deck of large cards that uses the same "push the front card back"
+ * animation as the project cards. Drag/swipe the front card, use the arrow buttons or
+ * keys, click a card peeking out behind, or tap a dot to bring another screenshot forward.
  */
+import gsap from 'gsap';
+
 export interface LightboxItem {
   src: string; // card thumbnail (used as a fallback)
-  full: string; // large version shown in the pop-up
+  full: string; // large version shown in the viewer
   alt: string;
 }
 
@@ -15,20 +18,21 @@ const CHEVRON_R = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7
 const CLOSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
 let root: HTMLElement | null = null;
-let items: LightboxItem[] = [];
-let index = 0;
-let trigger: HTMLElement | null = null;
-let loadToken = 0;
-let closeTimer = 0;
-
+let deck: HTMLElement;
 let titleEl: HTMLElement;
 let countEl: HTMLElement;
-let imgEl: HTMLImageElement;
-let captionEl: HTMLElement;
 let dotsEl: HTMLElement;
 let prevBtn: HTMLButtonElement;
 let nextBtn: HTMLButtonElement;
-let stage: HTMLElement;
+
+let items: LightboxItem[] = [];
+let cards: HTMLElement[] = [];
+let order: number[] = []; // order[0] is the card on top, order[1] sits right behind it, ...
+let busy = false;
+let trigger: HTMLElement | null = null;
+let closeTimer = 0;
+
+const DIM = [0, 0.45, 0.7];
 
 function build() {
   root = document.createElement('div');
@@ -39,75 +43,170 @@ function build() {
   root.setAttribute('aria-label', 'Project screenshots');
   root.innerHTML = `
     <div class="lightbox-backdrop" data-lb-close></div>
-    <div class="lightbox-card">
+    <div class="lightbox-wrap">
       <header class="lightbox-head">
         <h3 class="lightbox-title"></h3>
         <span class="lightbox-count" aria-live="polite"></span>
         <button class="lightbox-close" type="button" data-lb-close aria-label="Close preview">${CLOSE}</button>
       </header>
-      <div class="lightbox-stage">
-        <img class="lightbox-img" alt="" draggable="false" />
+      <div class="lightbox-deck">
         <button class="lightbox-btn lightbox-prev" type="button" aria-label="Previous image">${CHEVRON_L}</button>
         <button class="lightbox-btn lightbox-next" type="button" aria-label="Next image">${CHEVRON_R}</button>
       </div>
-      <p class="lightbox-caption"></p>
       <div class="lightbox-dots"></div>
     </div>`;
   document.body.append(root);
 
+  deck = root.querySelector('.lightbox-deck')!;
   titleEl = root.querySelector('.lightbox-title')!;
   countEl = root.querySelector('.lightbox-count')!;
-  imgEl = root.querySelector('.lightbox-img')!;
-  captionEl = root.querySelector('.lightbox-caption')!;
   dotsEl = root.querySelector('.lightbox-dots')!;
   prevBtn = root.querySelector('.lightbox-prev')!;
   nextBtn = root.querySelector('.lightbox-next')!;
-  stage = root.querySelector('.lightbox-stage')!;
 
   root.querySelectorAll('[data-lb-close]').forEach((el) => el.addEventListener('click', close));
-  prevBtn.addEventListener('click', () => go(index - 1, -1));
-  nextBtn.addEventListener('click', () => go(index + 1, 1));
+  // clicking the empty space around the deck closes the viewer
+  root.addEventListener('click', (e) => {
+    if (e.target === root) close();
+  });
+  prevBtn.addEventListener('click', () => step(-1));
+  nextBtn.addEventListener('click', () => step(1));
   root.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-  imgEl.addEventListener('error', () => {
-    const fallback = items[index]?.src;
-    if (fallback && imgEl.getAttribute('src') !== fallback) imgEl.src = fallback;
+
+  // clicking a card peeking out behind the front one brings it forward
+  deck.addEventListener('click', (e) => {
+    const card = (e.target as HTMLElement).closest<HTMLElement>('.lb-card');
+    if (card && card.dataset.pos === 'back') goTo(cards.indexOf(card));
   });
 
-  // swipe / drag to navigate
+  document.addEventListener('keydown', onKey);
+  window.addEventListener('resize', () => {
+    if (root && !root.hidden && !busy) applyRest();
+  });
+}
+
+const peek = () => parseFloat(getComputedStyle(deck).getPropertyValue('--peek')) || 22;
+
+/** x / y / dim of a card sitting `depth` places behind the front one. */
+function pose(depth: number) {
+  const k = Math.min(depth, 2);
+  const p = peek();
+  return { x: k * p, y: -k * p, rotateX: 0, rotateZ: 0, '--dim': DIM[k] };
+}
+const zFor = (depth: number) => cards.length - depth;
+
+function ensureLoaded(i: number) {
+  const img = cards[i]?.querySelector('img');
+  if (img && !img.getAttribute('src')) img.src = items[i].full;
+}
+
+function applyRest() {
+  order.forEach((ci, depth) => {
+    const card = cards[ci];
+    const isFront = depth === 0;
+    card.dataset.pos = isFront ? 'front' : 'back';
+    card.setAttribute('aria-hidden', String(!isFront));
+    gsap.set(card, { ...pose(depth), zIndex: zFor(depth), transformPerspective: 1400 });
+    if (depth <= 2) ensureLoaded(ci);
+  });
+  ensureLoaded(order[order.length - 1]); // so "previous" is ready too
+
+  const front = order[0];
+  countEl.textContent = `${front + 1} / ${cards.length}`;
+  dotsEl.querySelectorAll('button').forEach((d, k) => d.setAttribute('aria-current', String(k === front)));
+}
+
+function step(dir: 1 | -1) {
+  goTo(dir === 1 ? order[1] : order[order.length - 1]);
+}
+
+function goTo(target: number) {
+  if (busy || cards.length < 2 || target === order[0]) return;
+  const at = order.indexOf(target);
+  const next = [...order.slice(at), ...order.slice(0, at)]; // rotate so `target` is on top
+  const outIdx = order[0];
+  const out = cards[outIdx];
+  const inn = cards[target];
+
+  busy = true;
+  ensureLoaded(target);
+  const finish = () => {
+    order = next;
+    applyRest();
+    deck.classList.remove('swapping');
+    busy = false;
+  };
+  if (reducedMotion.matches) {
+    finish();
+    return;
+  }
+  deck.classList.add('swapping');
+
+  const p = peek();
+  const lift = out.offsetHeight * 0.4;
+  const tl = gsap.timeline({ onComplete: finish });
+  // One continuous motion (same as the project cards): the front card lifts and tips back,
+  // the order flips at the top of the roll, then it drops in behind while the next one rises.
+  tl.to(out, { x: p * 0.5, y: -lift, rotateX: 26, rotateZ: 0, duration: 0.36, ease: 'power2.out' }, 0);
+  tl.to(inn, { x: p * 0.4, y: -p * 0.4, '--dim': 0.25, duration: 0.36, ease: 'power1.out' }, 0);
+  next.forEach((ci, depth) => {
+    tl.set(cards[ci], { zIndex: zFor(depth) }, 0.32);
+    if (ci === target) {
+      tl.to(cards[ci], { ...pose(0), duration: 0.5, ease: 'back.out(1.5)' }, 0.32);
+    } else if (ci === outIdx) {
+      tl.to(cards[ci], { ...pose(depth), duration: 0.5, ease: 'power3.inOut' }, 0.32);
+    } else {
+      tl.to(cards[ci], { ...pose(depth), duration: 0.5, ease: 'power2.inOut' }, 0.32);
+    }
+  });
+}
+
+function attachDrag(card: HTMLElement) {
   let sx = 0;
   let sy = 0;
   let dx = 0;
-  let dragging = false;
-  stage.addEventListener('pointerdown', (e) => {
-    if ((e.target as HTMLElement).closest('button')) return;
+  let dy = 0;
+  let axis: '' | 'x' | 'y' = '';
+  let tracking = false;
+  let pid = -1;
+
+  card.addEventListener('pointerdown', (e) => {
+    if (busy || card.dataset.pos !== 'front') return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    dragging = true;
+    tracking = true;
     sx = e.clientX;
     sy = e.clientY;
-    dx = 0;
-    stage.setPointerCapture(e.pointerId);
-    imgEl.style.transition = 'none';
+    dx = dy = 0;
+    axis = '';
+    pid = e.pointerId;
   });
-  stage.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
+  card.addEventListener('pointermove', (e) => {
+    if (!tracking) return;
     dx = e.clientX - sx;
-    const dy = e.clientY - sy;
-    if (Math.abs(dx) > Math.abs(dy) && items.length > 1) imgEl.style.transform = `translateX(${dx}px)`;
+    dy = e.clientY - sy;
+    if (!axis) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      card.classList.add('dragging');
+      card.setPointerCapture(pid);
+    }
+    if (axis === 'x') gsap.set(card, { x: dx * 0.8, y: 0, rotateX: 0, rotateZ: dx * 0.015 });
+    else gsap.set(card, { x: 0, y: dy * 0.55, rotateX: -dy * 0.04, rotateZ: 0 });
   });
-  const end = (e: PointerEvent, cancelled: boolean) => {
-    if (!dragging) return;
-    dragging = false;
-    const dy = e.clientY - sy;
-    imgEl.style.transition = 'transform .25s cubic-bezier(.16,.84,.44,1)';
-    imgEl.style.transform = '';
-    if (!cancelled && items.length > 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-      go(index + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  const release = (cancelled: boolean) => {
+    if (!tracking) return;
+    tracking = false;
+    if (!card.classList.contains('dragging')) return;
+    card.classList.remove('dragging');
+    const d = axis === 'x' ? dx : dy;
+    if (!cancelled && Math.abs(d) > 70 && cards.length > 1) {
+      step(d < 0 ? 1 : -1); // drag left / up = next, right / down = previous
+    } else {
+      gsap.to(card, { ...pose(0), duration: 0.4, ease: 'back.out(1.6)' });
     }
   };
-  stage.addEventListener('pointerup', (e) => end(e, false));
-  stage.addEventListener('pointercancel', (e) => end(e, true));
-
-  document.addEventListener('keydown', onKey);
+  card.addEventListener('pointerup', () => release(false));
+  card.addEventListener('pointercancel', () => release(true));
 }
 
 function onKey(e: KeyboardEvent) {
@@ -115,12 +214,12 @@ function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape') {
     e.preventDefault();
     close();
-  } else if (e.key === 'ArrowLeft' && items.length > 1) {
+  } else if (e.key === 'ArrowLeft') {
     e.preventDefault();
-    go(index - 1, -1);
-  } else if (e.key === 'ArrowRight' && items.length > 1) {
+    step(-1);
+  } else if (e.key === 'ArrowRight') {
     e.preventDefault();
-    go(index + 1, 1);
+    step(1);
   } else if (e.key === 'Tab') {
     const focusables = Array.from(root.querySelectorAll<HTMLElement>('button')).filter((b) => b.offsetParent !== null);
     if (!focusables.length) return;
@@ -136,52 +235,36 @@ function onKey(e: KeyboardEvent) {
   }
 }
 
-function go(n: number, dir: number) {
-  index = (n + items.length) % items.length;
-  render(dir);
-}
-
-function render(dir: number) {
-  const item = items[index];
-  countEl.textContent = `${index + 1} / ${items.length}`;
-  captionEl.textContent = item.alt;
-  dotsEl.querySelectorAll('button').forEach((d, k) => d.setAttribute('aria-current', String(k === index)));
-
-  const token = ++loadToken;
-  const pre = new Image();
-  pre.src = item.full;
-  const show = () => {
-    if (token !== loadToken) return;
-    imgEl.src = item.full;
-    imgEl.alt = item.alt;
-    if (!reducedMotion.matches && dir !== 0) {
-      imgEl.animate(
-        [
-          { opacity: 0, transform: `translateX(${dir * 48}px)` },
-          { opacity: 1, transform: 'translateX(0)' },
-        ],
-        { duration: 240, easing: 'cubic-bezier(.16,.84,.44,1)' },
-      );
-    }
-  };
-  pre.decode().then(show, show);
-
-  // warm the neighbours so next/prev feel instant
-  [index + 1, index - 1].forEach((k) => {
-    const nb = items[(k + items.length) % items.length];
-    if (nb) new Image().src = nb.full;
-  });
-}
-
 export function openLightbox(title: string, list: LightboxItem[], start: number, from: HTMLElement | null) {
   if (!list.length) return;
   if (!root) build();
   window.clearTimeout(closeTimer);
+  gsap.killTweensOf(cards);
 
   items = list;
-  index = start;
   trigger = from;
+  busy = false;
   titleEl.textContent = title;
+  deck.classList.remove('swapping');
+
+  deck.querySelectorAll('.lb-card').forEach((c) => c.remove());
+  cards = list.map((item) => {
+    const card = document.createElement('figure');
+    card.className = 'lb-card';
+    card.innerHTML = `<div class="lb-media"><img alt="" draggable="false" decoding="async" /></div><figcaption></figcaption>`;
+    const img = card.querySelector('img')!;
+    img.alt = item.alt;
+    img.addEventListener('load', () => img.classList.add('ready'));
+    img.addEventListener('error', () => {
+      if (img.getAttribute('src') !== item.src) img.src = item.src;
+    });
+    card.querySelector('figcaption')!.textContent = item.alt;
+    attachDrag(card);
+    deck.insertBefore(card, prevBtn);
+    return card;
+  });
+  order = [...list.keys()];
+  order = [...order.slice(start), ...order.slice(0, start)];
 
   const multi = list.length > 1;
   prevBtn.hidden = !multi;
@@ -193,13 +276,20 @@ export function openLightbox(title: string, list: LightboxItem[], start: number,
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.setAttribute('aria-label', `Show image ${n + 1} of ${list.length}`);
-      dot.addEventListener('click', () => go(n, n > index ? 1 : -1));
+      dot.addEventListener('click', () => goTo(n));
       return dot;
     }),
   );
 
   root!.hidden = false;
-  render(0);
+  applyRest();
+  if (!reducedMotion.matches) {
+    // the stack fans out from underneath the front card
+    const behind = order.slice(1, 3).map((ci) => cards[ci]);
+    behind.forEach((card, k) => {
+      gsap.from(card, { x: 0, y: 0, '--dim': 0.15, duration: 0.55, delay: 0.08 + k * 0.07, ease: 'back.out(1.4)' });
+    });
+  }
   requestAnimationFrame(() => root!.classList.add('open'));
   root!.querySelector<HTMLElement>('.lightbox-close')!.focus({ preventScroll: true });
 }
@@ -207,10 +297,11 @@ export function openLightbox(title: string, list: LightboxItem[], start: number,
 export function close() {
   if (!root || root.hidden) return;
   root.classList.remove('open');
-  loadToken++;
   const done = () => {
     root!.hidden = true;
-    imgEl.removeAttribute('src');
+    gsap.killTweensOf(cards);
+    deck.querySelectorAll('.lb-card').forEach((c) => c.remove());
+    cards = [];
     trigger?.focus({ preventScroll: true });
     trigger = null;
   };

@@ -63,7 +63,7 @@
             </svg>
           </button>
           <span class="rule" aria-hidden="true"></span>
-          <a class="resume" href="#" download aria-label="Download resume">
+          <a class="resume" href="/Ashutosh_Pundhir_Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume in a new tab" title="Open resume in a new tab">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.5h8.5L19 7v14.5H6Z"/><path d="M14.5 2.5V7H19"/><path d="M9 12h6M9 15.2h6M9 8.8h2"/></svg>
             <span class="resume-label">Resume</span>
           </a>
@@ -298,7 +298,9 @@
                   <span class="drag-handle" data-handle aria-hidden="true"></span>
                   <div class="project-media" data-carousel role="group" aria-roledescription="carousel" aria-label="Ashutosh Portfolio screenshots">
                     <div class="carousel-track">
-                        <img src="/assets/projects/portfolio-1.webp" data-full="/assets/projects/large/portfolio-1.webp" alt="Ashutosh pixel-aquarium portfolio, Built and Shipped project section" draggable="false" decoding="async" />
+                        <img src="/assets/projects/portfolio-1.webp" data-full="/assets/projects/large/portfolio-1.webp" alt="Portfolio hero: Ashutosh Pundhir over a pixel-art planted aquarium with a swimming betta" draggable="false" decoding="async" />
+                        <img src="/assets/projects/portfolio-2.webp" data-full="/assets/projects/large/portfolio-2.webp" alt="Portfolio aquarium viewing area: a full-screen pixel planted tank with fish and shrimp" draggable="false" decoding="async" />
+                        <img src="/assets/projects/portfolio-3.webp" data-full="/assets/projects/large/portfolio-3.webp" alt="Portfolio Aquarium Corner section with a pixel tank card and an aquascaping lesson card" draggable="false" decoding="async" />
                     </div>
                     <button class="carousel-btn carousel-prev" type="button" data-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
                     <button class="carousel-btn carousel-next" type="button" data-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -607,32 +609,44 @@
                 <h3>The Aquarium Corner</h3>
                 <p>Four tanks, zero chill. Aquascaping is where my sense of composition comes from &mdash; and the only place where I'm happy to watch things grow slowly.</p>
               </div>
-              <!-- Replace the images in /public/assets/about/ (tank-1.webp ... tank-4.webp) with your own tank photos; edit the captions below. -->
+              <!-- Photos live in /public/assets/about/ (tank-1.webp ... tank-6.webp). Edit the captions and alt text below; add or remove a <figure> to change the count. -->
               <div class="tank-duo">
-                <div class="stack-deck stack-photos" data-stack data-reveal role="group" aria-roledescription="carousel" aria-label="My four aquariums">
-                  <figure class="stack-card stack-photo" data-card data-pos="front" aria-label="Tank 01">
+                <div class="stack-deck stack-photos" data-stack data-reveal role="group" aria-roledescription="carousel" aria-label="Photos from my aquariums">
+                  <figure class="stack-card stack-photo" data-card data-pos="front" aria-label="Planted tank">
                     <span class="drag-handle" data-handle aria-hidden="true"></span>
-                    <img src="/assets/about/tank-1.webp" alt="Aquarium 1" loading="lazy" draggable="false" />
-                    <figcaption>Tank 01</figcaption>
-                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 02"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    <img src="/assets/about/tank-1.webp" alt="A heavily planted aquarium with fine-leaf stems, tall vallisneria and a few tiny fish" loading="lazy" draggable="false" />
+                    <figcaption>Planted tank</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Guppy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
                   </figure>
-                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 02">
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Guppy">
                     <span class="drag-handle" data-handle aria-hidden="true"></span>
-                    <img src="/assets/about/tank-2.webp" alt="Aquarium 2" loading="lazy" draggable="false" />
-                    <figcaption>Tank 02</figcaption>
-                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 03"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    <img src="/assets/about/tank-2.webp" alt="Close-up of a guppy with a red and blue tail swimming through feathery plants" loading="lazy" draggable="false" />
+                    <figcaption>Guppy</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Betta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
                   </figure>
-                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 03">
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Betta">
                     <span class="drag-handle" data-handle aria-hidden="true"></span>
-                    <img src="/assets/about/tank-3.webp" alt="Aquarium 3" loading="lazy" draggable="false" />
-                    <figcaption>Tank 03</figcaption>
-                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 04"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    <img src="/assets/about/tank-3.webp" alt="A blue and red betta with flowing fins in a planted tank" loading="lazy" draggable="false" />
+                    <figcaption>Betta</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Goldfish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
                   </figure>
-                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Tank 04">
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Goldfish">
                     <span class="drag-handle" data-handle aria-hidden="true"></span>
-                    <img src="/assets/about/tank-4.webp" alt="Aquarium 4" loading="lazy" draggable="false" />
-                    <figcaption>Tank 04</figcaption>
-                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next tank: Tank 01"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                    <img src="/assets/about/tank-4.webp" alt="An orange goldfish with long translucent fins above green plants" loading="lazy" draggable="false" />
+                    <figcaption>Goldfish</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Glow tetras &amp; angelfish"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Glow tetras & angelfish">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-5.webp" alt="Pink, yellow and green glow tetras beside a black angelfish in front of a stem-plant thicket" loading="lazy" draggable="false" />
+                    <figcaption>Glow tetras &amp; angelfish</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Betta among the leaves"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
+                  </figure>
+                  <figure class="stack-card stack-photo" data-card data-pos="back" aria-hidden="true" aria-label="Betta among the leaves">
+                    <span class="drag-handle" data-handle aria-hidden="true"></span>
+                    <img src="/assets/about/tank-6.webp" alt="A betta resting among broad vallisneria leaves" loading="lazy" draggable="false" />
+                    <figcaption>Betta among the leaves</figcaption>
+                    <button class="push-btn photo-push" type="button" data-push aria-label="Show next photo: Planted tank"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/></svg><span>Next</span></button>
                   </figure>
                 </div>
                 <div class="stack-deck stack-lessons" data-stack data-reveal style="--reveal-delay: .12s" role="group" aria-roledescription="carousel" aria-label="Aquascaping lessons for interface design">
