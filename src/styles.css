@@ -1,4 +1,6 @@
 :root {
+  /* One place to change the site font (also update the Google Fonts <link> in index.html). */
+  --font-pixel: 'Pixelify Sans', ui-monospace, SFMono-Regular, Consolas, monospace;
   --ink: #eef4db;
   --muted: #cad4b0;
   --lime: #c6ed3e;
@@ -19,7 +21,7 @@ body {
   min-width: 320px;
   color: var(--ink);
   background: #021a1d;
-  font-family: 'Pixelify Sans', ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-family: var(--font-pixel);
   /* Pixelify Sans draws fi/fl ligatures like a capital A ("fish" -> "Ash"); turn them off site-wide. */
   font-variant-ligatures: none;
   font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0;
@@ -90,7 +92,17 @@ body.dark-mode .aquarium::after {
   
   background: linear-gradient(to bottom, rgba(1, 10, 12, .62) 0%, rgba(1, 10, 12, .34) 68%, rgba(1, 10, 12, 0) 100%);
   text-shadow: 0 1px 3px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .6);
-  transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease;
+  transition: background .35s ease, backdrop-filter .35s ease, border-color .35s ease,
+    transform .45s cubic-bezier(.16, .84, .44, 1), opacity .3s ease;
+}
+
+/* tucked away while the visitor enjoys the empty aquarium view (toggled from main.ts) */
+.site-header.header-hidden {
+  transform: translateY(-110%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform .45s cubic-bezier(.16, .84, .44, 1), opacity .3s ease, visibility 0s linear .45s;
 }
 
 .site-header.scrolled {
@@ -694,7 +706,9 @@ html.js-loading .site-header { opacity: 1; }
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #04191c;
+  touch-action: pan-y; /* horizontal swipes change the slide; vertical still scrolls the page */
 }
+.project-media .carousel-track img { cursor: zoom-in; }
 .carousel-track {
   display: flex;
   height: 100%;
@@ -767,15 +781,27 @@ html.js-loading .site-header { opacity: 1; }
 .carousel-dots button[aria-current='true'] { width: 26px; background: var(--lime); }
 
 /* ---- Card content ---- */
-.project-body { padding: 26px 28px 28px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
-.project-body h3 { margin: 0; font-size: 28.5px; font-weight: 600; }
-.project-body p { margin: 0; font-size: 17.5px; line-height: 1.55; color: var(--muted); flex: 1; }
+.project-body { padding: 20px 24px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
+.project-body h3 { margin: 0; font-size: 26px; font-weight: 600; flex: none; }
+.project-body p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  flex: 1 1 0;
+  min-height: 0;
+  /* Safety net: if a description is ever longer than the space left, it scrolls
+     inside the card so the tags and "View project" row are never pushed out. */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(198, 237, 62, .5) transparent;
+}
 .project-body p strong { font-weight: 700; color: var(--ink); }
 
-.project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; flex: none; }
 .project-tags span {
-  font-size: 14px;
-  padding: 4px 11px;
+  font-size: 13px;
+  padding: 3px 10px;
   border-radius: 999px;
   background: rgba(198, 237, 62, .1);
   border: 1px solid rgba(198, 237, 62, .28);
@@ -788,7 +814,8 @@ html.js-loading .site-header { opacity: 1; }
   justify-content: space-between;
   gap: 12px;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 4px;
+  flex: none;
 }
 
 .project-link {
@@ -985,9 +1012,10 @@ html.js-loading .site-header { opacity: 1; }
 
 @media (max-width: 560px) {
   .project-deck { --peek: 12px; --card-h: 540px; }
-  .project-body { padding: 20px 20px 22px; }
-  .project-body h3 { font-size: 25.5px; }
-  .project-body p, .specs-list li { font-size: 16.5px; }
+  .project-body { padding: 18px 18px 18px; }
+  .project-body h3 { font-size: 24px; }
+  .project-body p { font-size: 15px; }
+  .specs-list li { font-size: 16.5px; }
   .carousel-btn { width: 22px; height: 22px; margin-top: -11px; }
   .brand { font-size: 19px; }
   .brand-mark { width: 23px; height: 23px; }
@@ -1185,7 +1213,7 @@ html.js-loading .site-header { opacity: 1; }
   width: 92px;
   height: 92px;
   border-radius: 50%;
-  image-rendering: pixelated;
+  object-fit: cover;
   box-shadow: 0 5px 0 rgba(0, 0, 0, .5), 0 12px 20px rgba(0, 0, 0, .4);
   border: 1px solid rgba(198, 237, 62, .35);
   transition: transform .3s ease;
@@ -1403,8 +1431,7 @@ html.js-loading .site-header { opacity: 1; }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  image-rendering: pixelated;
+  object-fit: contain;
   display: block;
 }
 .stack-photo figcaption {
@@ -1604,4 +1631,191 @@ html.js-loading .site-header { opacity: 1; }
   .stack-deck { --peek: 12px; }
   .stack-card { padding: 22px 20px 18px; }
   .stack-photo { padding: 0; }
+}
+
+/* ---- Expand button on the card carousel ---- */
+.carousel-zoom {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  color: var(--ink);
+  background: rgba(2, 18, 20, .72);
+  border: 1px solid rgba(238, 244, 219, .35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.carousel-zoom svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; }
+.carousel-zoom:hover, .carousel-zoom:focus-visible { color: var(--lime); border-color: var(--lime); }
+.carousel-zoom:active { transform: scale(.94); }
+
+/* ---- Screenshot viewer: a deck of large cards (same push-back animation as the project cards) ---- */
+.lightbox {
+  --peek: 22px;
+  /* card height = what is left of the screen after the header, dots and the peeking cards */
+  --lb-h: clamp(300px, calc(100vh - 170px), 860px);
+  --lb-h: clamp(300px, calc(100dvh - 170px), 860px);
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+.lightbox[hidden] { display: none; }
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 9, 10, .84);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+.lightbox-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(1180px, 100%);
+  opacity: 0;
+  transform: translateY(14px) scale(.97);
+  transition: opacity .22s ease, transform .26s cubic-bezier(.16, .84, .44, 1);
+}
+.lightbox.open .lightbox-backdrop { opacity: 1; }
+.lightbox.open .lightbox-wrap { opacity: 1; transform: none; }
+
+.lightbox-head { display: flex; align-items: center; gap: 12px; padding-right: calc(var(--peek) * 2); }
+.lightbox-title { margin: 0; flex: 1; min-width: 0; font-size: 26px; font-weight: 600; color: var(--ink); text-shadow: 2px 2px 0 rgba(0, 0, 0, .5); }
+.lightbox-count { font-size: 16px; color: var(--lime); letter-spacing: .08em; }
+.lightbox-close, .lightbox-btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  color: var(--ink);
+  background: rgba(2, 18, 20, .82);
+  border: 1px solid rgba(238, 244, 219, .35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.lightbox-close { width: 38px; height: 38px; }
+.lightbox-close svg, .lightbox-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; stroke-linejoin: miter; }
+.lightbox-close:hover, .lightbox-btn:hover, .lightbox-close:focus-visible, .lightbox-btn:focus-visible, .lightbox-dots button:focus-visible { color: var(--lime); border-color: var(--lime); outline: none; }
+.lightbox-btn:active { transform: scale(.95); }
+.lightbox-btn[hidden], .lightbox-dots[hidden], .lightbox-count[hidden] { display: none; }
+
+/* the deck: cards stacked in one grid cell, back cards peek out up and to the right */
+.lightbox-deck {
+  position: relative;
+  display: grid;
+  padding: calc(var(--peek) * 2) calc(var(--peek) * 2) 0 0;
+  isolation: isolate;
+}
+.lightbox-deck.swapping { z-index: 5; }
+.lb-card {
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: var(--lb-h);
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #051b1e;
+  border: 1px solid rgba(238, 244, 219, .24);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .5), 0 16px 26px rgba(0, 0, 0, .4);
+  transform-origin: 50% 50%;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lb-card::after { /* darkening veil that fades away as a card comes forward */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: #010b0c;
+  opacity: var(--dim, 0);
+  pointer-events: none;
+}
+.lb-card[data-pos='front'] { cursor: grab; }
+.lb-card[data-pos='back'] { cursor: pointer; }
+.lb-card.dragging { cursor: grabbing; }
+.lb-media { position: relative; flex: 1; min-height: 0; background: #031417; }
+/* the image fills its area and object-fit scales it to fit whole, so phone and desktop shots are never cropped */
+.lb-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; opacity: 0; transition: opacity .3s ease; }
+.lb-media img.ready { opacity: 1; }
+.lb-card figcaption {
+  flex: none;
+  padding: 10px 18px 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px dashed rgba(238, 244, 219, .2);
+}
+
+.lightbox-btn { position: absolute; top: calc(50% + var(--peek)); z-index: 20; width: 46px; height: 46px; margin-top: -23px; }
+.lightbox-prev { left: 14px; }
+.lightbox-next { right: calc(var(--peek) * 2 + 14px); }
+
+.lightbox-dots { display: flex; justify-content: center; gap: 8px; padding-right: calc(var(--peek) * 2); }
+.lightbox-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  background: rgba(238, 244, 219, .3);
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: width .2s ease, background .2s ease;
+}
+.lightbox-dots button[aria-current='true'] { width: 26px; background: var(--lime); }
+
+@media (max-width: 700px) {
+  .lightbox {
+    --peek: 11px;
+    --lb-h: clamp(260px, calc(100vh - 135px), 780px);
+    --lb-h: clamp(260px, calc(100dvh - 135px), 780px);
+    padding: 8px;
+  }
+  .lightbox-wrap { gap: 10px; }
+  .lightbox-title { font-size: 20px; }
+  .lb-card { border-radius: 14px; }
+  .lb-card figcaption { padding: 8px 12px 10px; font-size: 14px; }
+  .lightbox-btn { width: 38px; height: 38px; margin-top: -19px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: calc(var(--peek) * 2 + 8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .site-header.header-hidden { transition: none; }
+  .lightbox-backdrop, .lightbox-wrap { transition: none; }
+}
+
+/* ---- About: "How I build" note ---- */
+.about-note {
+  margin-top: 22px;
+  padding: 18px 22px 20px;
+  background: rgba(198, 237, 62, .05);
+  border: 1px solid rgba(238, 244, 219, .2);
+  border-left: 4px solid var(--lime);
+  border-radius: 12px;
+}
+.about-note .about-kicker { display: block; margin-bottom: 8px; }
+.about-note p { margin: 0; max-width: 980px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.about-note strong { font-weight: 700; color: var(--ink); }
+
+/* keep the two-line hero role tidy on very small phones */
+@media (max-width: 380px) {
+  .role { font-size: 16.5px; }
 }
